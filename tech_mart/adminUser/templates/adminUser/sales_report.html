@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% block css %}
+<style>
+  .chart-container {
+  width: 800px; /* Adjust the width as desired */
+  height: 400px; /* Adjust the height as desired */
+  margin: 0 auto; /* Center the charts horizontally */
+}
+
+  @media print {
+      body * {
+          visibility: hidden;
+      }
+
+      #printable-content,
+      #printable-content * {
+          visibility: visible;
+      }
+
+      #printable-content {
+          position: absolute;
+          left: 0;
+          top: 0;
+      }
+  }
+</style>
+{% endblock css %}
+
+{% block content %}
+<div class="container-fluid" id="printable-content">
+<h1>Sales Report</h1>
+
+<form>
+  <label for="start_date">Start Date:</label>
+  <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+
+  <label for="end_date">End Date:</label>
+  <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+
+  <label for="date_range">Date Range:</label>
+  <select id="date_range" name="date_range">
+    <option value="">Custom</option>
+    <option value="1day">1 Day</option>
+    <option value="1week">1 Week</option>
+    <option value="1month">1 Month</option>
+    <option value="1year">1 Year</option>
+  </select>
+
+  <button type="submit">Filter</button>
+</form>
+
+<div>
+  <h2>Overall Statistics</h2>
+  <p>Total Orders: {{ total_orders }}</p>
+  <p>Total Revenue: ${{ total_revenue }}</p>
+  <p>Total Discount: ${{ total_discount }}</p>
+
+
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+  <h2>Revenue by Payment Method</h2>
+  <div class="chart-container">
+
+    <canvas id="paymentMethodChart"></canvas>
+  </div>
+</div>
+
+
+<div class="col-lg-6">
+  <h2>Revenue Over Time</h2>
+  <div class="chart-container w-100">
+    <canvas id="revenueChart"></canvas>
+  </div>
+</div>
+</div>
+<div>
+</div>
+</div>
+  <h2>Top Selling Products</h2>
+  <ol>
+    {% for product in top_products %}
+    <li>{{ product.product__name }} - Quantity Sold: {{ product.total_quantity }}</li>
+    {% endfor %}
+  </ol>
+  <h2>Top Selling Categories</h2>
+  <ol>
+  
+    {% for category in top_categories %}
+    <li>{{ category.product__category__name }} - Quantity Sold: {{ category.total_quantity }}</li>
+    {% endfor %}
+    </ol>
+  <h2>Top selling Brands</h2>
+  <ol>
+    {% for brand in top_brands %}
+    <li>{{ brand.product__brand__name }} - Quantity Sold
+      : {{ brand.total_quantity }}</li>
+      {% endfor %}
+      </ol>
+
+</div>
+
+{% if range_used %}
+<a
+  href="?download=pdf&start_date={{ start_date|date:'Y-m-d' }}&end_date={{ end_date|date:'Y-m-d' }}&date_range={{ date_range }}">Download
+  PDF Report </a>
+<a
+  href="?download=excel&start_date={{ start_date|date:'Y-m-d' }}&end_date={{ end_date|date:'Y-m-d' }}&date_range={{ date_range }}">Download
+  Excel Report</a>
+{% else %}
+<div>
+  <a href="?download=pdf&start_date={{ start_date }}&end_date={{ end_date }}&date_range={{ date_range }}">Download PDF
+    Report</a>
+  <a href="?download=excel&start_date={{ start_date }}&end_date={{ end_date }}&date_range={{ date_range }}">Download
+    Excel Report</a>
+</div>
+{% endif %}
+</div>
+<button class="btn btn-primary" onclick="window.print()">
+  <i class="fas fa-print"></i> Print the page
+</button>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+<script>
+  // Revenue by Payment Method Chart
+  var paymentMethodLabels = [];
+  var paymentMethodData = [];
+  var paymentMethodDiscounts = [];
+
+
+  paymentMethodLabels.push('Total Revenue');
+  paymentMethodData.push({{ total_revenue }});
+  paymentMethodDiscounts.push({{ total_discount }});
+  var paymentMethodCtx = document.getElementById('revenueChart').getContext('2d');
+  var paymentMethodChart = new Chart(paymentMethodCtx, {
+    type: 'bar',
+    data: {
+      labels: paymentMethodLabels,
+      datasets: [{
+        label: 'Revenue',
+        data: paymentMethodData,
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      },
+
+      {
+        label: 'Discount',
+        data: paymentMethodDiscounts,
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }
+      ]
+    },
+
+  });
+
+  // Revenue Over Time Chart
+  var revenueLabels = [];
+  var revenueData = [];
+  var revenueDiscounts = [];
+
+  {% for order in revenue_over_time %}
+  revenueLabels.push('{{ order.date|date:"Y-m-d" }}');
+  revenueData.push({{ order.total_price }});
+  revenueDiscounts.push({{ total_discount }});
+  {% endfor %}
+
+  var paymentMethodLabels = [];
+  var paymentMethodData = [];
+
+  {% for payment in revenue_by_payment %}
+  paymentMethodLabels.push('{{ payment.payment_method }}');
+  paymentMethodData.push({{ payment.total }});
+  {% endfor %}
+
+  var paymentMethodCtx = document.getElementById('paymentMethodChart').getContext('2d');
+  var paymentMethodChart = new Chart(paymentMethodCtx, {
+    type: 'pie',
+    data: {
+      labels: paymentMethodLabels,
+      datasets: [{
+        label: 'Revenue by Payment Method',
+        data: paymentMethodData,
+        backgroundColor: [
+          '#FF6384',
+          '#36A2EB',
+          '#FFCE56',
+          // Add more colors if needed
+        ],
+        hoverBackgroundColor: [
+          '#FF6384',
+          '#36A2EB',
+          '#FFCE56',
+          // Add more colors if needed
+        ]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Revenue by Payment Method'
+        }
+      }
+    }
+  });
+</script>
+{% endblock %}

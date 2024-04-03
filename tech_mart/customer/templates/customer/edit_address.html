@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href='{% static "css/form.css" %}'>
+{% endblock css %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="">
+                <div class="card-header">
+                    <h4 class="card-title">Edit Profile</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+            {% for field in form %}
+              <div class="form-row">
+                <div class="input-data">
+                  {{ field }}
+                  <div class="underline"></div>
+                  <label for="{{ field.name }}">{{ field.label }}</label>
+                </div>
+              </div>
+            {% endfor %}
+                        
+                        <button type="submit" class="btn btn-primary">Edit Address</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock content %}

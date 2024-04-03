@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/shop.css' %}" />
+<link rel="stylesheet" href="{% static 'css/product.css' %}" />
+<script src="{% static 'js/shop.js' %}" defer></script>
+{% endblock css %}
+{% block content %}
+
+
+
+
+
+
+<section class="shop-feature bg-gray grid">
+  <div>
+    <ol class="breadcrumb fs-poppins fs-100  text-black mt-3 ms-2">
+      <li class="breadcrumb-item margin" aria-current="page">Home</li>
+      <li class="breadcrumb-item margin" aria-current="page">{{product.category}}</li>
+      <li class="breadcrumb-item margin" aria-current="page">{{product.name}}</li>
+    </ol>
+
+  </div>
+
+</section>
+<!-- ==================Single Product-============================= -->
+
+<section class="single-product ">
+  <div class="row ">
+    <div class="col-lg-6 image-gallery">
+      <div class="row">
+        <div class="col-lg-2 d-flex flex-column small_images "
+          style="display: none; @media (min-width: 992px) { display: flex; flex-direction: column; /* add your other styles here */ }">
+          {% for image in product.images.all %}
+          <div class="product-item" data-img="{{ image.image.url }}">
+            <img class="product_img img-fluid w-100 small_img" src="{{ image.image.url }}" alt="{{ product.name }}">
+          </div>
+          {% endfor %}
+        </div>
+        <div class="col-lg-10 align-items-center">
+
+          <div id="item-3" class="product-item" data-img="{{ product.images.first.image.url }}">
+            <img class="product_img img-fluid w-100 big_img" src="{{ product.images.first.image.url }}"
+              alt="{{ product.name }}">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 bg-white rounded p-2">
+      <div class="content">
+        <div class="product-info grid">
+          <h1 class="fs-poppins fs-400 bold-900 uppercase">{{ product.name }}</h1>
+          <!-- <div class="star-icon flex">
+                          <div>
+                            <i class="uil text-red uil-star"></i>
+                            <i class="uil text-red uil-star"></i>
+                            <i class="uil text-red uil-star"></i>
+                            <i class="uil text-red uil-star"></i>
+                            <i class="uil uil-star"></i>
+                          </div>
+                          <div>
+                            <p class="fs-montserrat fs-100">(1 customer review)</p>
+                          </div>
+                        </div> -->
+          <div>
+            <p class="fs-montserrat text-red">
+              <span class="text-black">Category: </span>{{ product.category }}
+            </p>
+          </div>
+
+          <div class="price">
+            {% if product.price_after_discount < product.price  %}
+
+            <p class="fs-poppins bold-500">$ <span class="text-decoration-line-through"> {{product.price}} </span>
+              {{product.price_after_discount}} </p>
+
+            {% else %}
+
+            <p class="fs-poppins bold-500">${{product.price}}</p>
+            {% endif %}
+          </div>
+
+          <div class="description grid" data-tab="false">
+            <h3 class="text-black fs-poppins fs-300">Description</h3>
+            <p class="fs-montserrat lineheight">
+              {{product.description}}
+            </p>
+          </div>
+
+          <div class="product-add-cart flex">
+            {% if product.stock <= 0 %} <p class="text-justify my_prod_text my_custom_a"><b>Out of stock</b></p>
+              <button class="btn large-btn bg-blue text-white fs-poppins fs-50">
+                <a href="{% url 'cart:add_to_wishlist' product.slug %}" class=" text-white">Add to wishlist</a>
+              </button>
+              {% else %}
+
+              <button class="product-btn large-btn bg-red text-white fs-poppins fs-50"><a
+                  href="{% url 'cart:add_cart' product.slug %}" class="text-white">Add to cart</a>
+
+              </button>
+              <button class="btn large-btn bg-blue text-white fs-poppins fs-50">
+                <a href="{% url 'cart:add_to_wishlist' product.slug %}" class=" text-white">Add to wishlist</a>
+              </button>
+          </div>
+          {% endif %}
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================Single Product-============================= -->
+
+<!-- ==============Product Description====================== -->
+
+
+</section>
+<div class="container">
+  <span class="block lineheight fs-700  big-wireless fs-poppins mt-2 bold-700" style="font-size: 2rem;">Related
+    Products</span>
+  <section class="shop-product grid">
+    {% for product in related_products %}
+    <div class="product-list grid">
+      <img src="{{product.images.first.image.url}}" alt="" style="max-width: 20vw;" />
+      <p class="fs-montserrat bold-600">{{product.name}}</p>
+      <div class="shop-btn flex">
+        <button class="bg-red text-white fs-montserrat "><a class="text-white"
+            href="{% url 'shop:detail' product.slug %}">Add To Cart</a>
+        </button>
+        {% if product.price_after_discount < product.price  %}
+
+        <p class="fs-poppins bold-500">$ <span class="text-decoration-line-through"> {{product.price}} </span>
+          {{product.price_after_discount}} </p>
+
+        {% else %}
+
+        <p class="fs-poppins bold-500">${{product.price}}</p>
+        {% endif %}
+      </div>
+
+      <!-- ===============Pop-Up========================== -->
+
+      <div class="pup-up">
+        <p class="fs-poppins">{{product.label}}</p>
+      </div>
+
+
+      <!-- ===============Pop-Up========================== -->
+
+    </div>
+    {% endfor %}
+
+
+  </section>
+
+  <section class="product-description grid">
+
+    <div class="product-taps ">
+
+
+
+      <article class="reviews-container">
+
+        <div class="reviews">
+          <p class="text-black fs-poppins fs-200 bold-700">
+            {{ product.reviews.count }}
+            review for {{product.name}}
+          </p>
+        </div>
+        {% for review in product.reviews.all %}
+        <div id="post-reviews">
+          <div id="display-reviews" class="display-reviews bg-very-light-gray flex">
+            <div>
+              <i class="uil text-black uil-user-circle"></i>
+            </div>
+            <div>
+              <div class="connent-box">
+                {% for _ in "12345" %}
+                {% if forloop.counter <= review.rating %} <i class="uil text-red uil-star"></i>
+                  {% else %}
+
+                  <i class="uil uil-star"></i>
+                  {% endif %}
+                  {% endfor %}<br>
+                  {{review.rating}}
+                  <p class="fs-poppins fs-200">
+                    <span class="bold-700">{{ review.customer }} </span>- {{ review.created }}
+                  </p>
+                  <p class="fs-poppins fs-200">{{review.message}}</p>
+                  {% if user.is_authenticated and review.customer == request.user %}
+                  <a href="{% url 'shop:edit_review' review.pk %}" class="edit-review-btn">Edit Review</a>
+                  {% endif %}
+              </div>
+
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="grid">
+          <div class="reviews">
+            <p class="text-black fs-poppins fs-200">Add a review</p>
+          </div>
+
+          <div class="give-reviews flex">
+            <div>
+              <p class="text-black fs-poppins fs-200 bold-700">Your rating *</p>
+            </div>
+            {% if user.is_authenticated and can_add_review %}
+            <form method="post">
+              {% csrf_token %}
+              <div class="reviews">
+                <p class="text-black fs-poppins fs-200">Add a review</p>
+              </div>
+
+              <div class="give-reviews flex">
+                <div>
+                  <p class="text-black fs-poppins fs-200 bold-700">Your rating *</p>
+                </div>
+                <div>
+                  {{ review_form.rating }}
+                </div>
+              </div>
+              <div class="message grid">
+                <p class="fs-montserrat">Your review</p>
+                {{ review_form.message }}
+              </div>
+              <div class="review-btn flex">
+                <button id="add-connent" class="large-btn bg-red text-white fs-poppins fs-50" type="submit">
+                  Submit
+                </button>
+              </div>
+            </form>
+            {% elif user.is_authenticated %}
+            <p>You can only leave a review after purchasing this product, or you have already left a review.</p>
+            {% else %}
+            <p>Please log in to leave a review.</p>
+            {% endif %}
+          </div>
+      </article>
+
+  </section>
+</div>
+<!-- ==============js====================== -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+  integrity="sha256-oLlAuxiV2Slr+OPn6GXL49uK9LorOijFtgkWfDLCp94=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-zoom/1.6.1/jquery.zoom.js"
+  integrity="sha512-1O67rfB2z8nblD56BtCKfz/uIU0/vSDIz4mWkr7GIii9sjcuzXP7LpZrTg+D2AGOFcVXoPMUoKEFBwEV14QiUg=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src='{% static "js/zoomsl.js" %}'></script>
+
+<script>
+  $(document).ready(function () {
+    $(".small_img").hover(function () {
+      $(".big_img").attr('src', $(this).attr('src'));
+    });
+  });
+
+  $(document).ready(function () {
+    $(".big_img").imagezoomsl({
+      zoomrange: [3, 3]
+    });
+  });
+</script>
+
+
+
+
+{% endblock content %}

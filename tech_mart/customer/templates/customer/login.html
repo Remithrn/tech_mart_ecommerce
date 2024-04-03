@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+  <link rel="stylesheet" href='{% static "css/form.css" %}'>
+{% endblock css %}
+{% block content %}
+
+<div class="container p-3 pb-4">
+
+      <div class="text">
+        Login
+      </div>
+      <form  method="POST" autocomplete="off">
+        {% csrf_token %}
+         <div class="form-row">
+            <div class="input-data">
+               <input type="text" required id="username" name="username">
+               <div class="underline"></div>
+               <label for="username">Username</label>
+            </div>
+            
+         </div>
+         <div class="form-row">
+            <div class="input-data">
+               <input type="password" required  id="password" name="password" >
+               <div class="underline"></div>
+               <label for="password">Password</label>
+            </div>
+            
+         </div>
+         <div class="form-row gap-4">
+         
+           <button type="submit" class="prdduct-btn large-btn text-white bg-blue fs-poppins mt-5">Submit</button>
+          
+            
+                  
+          
+          
+              
+      </form>
+
+      <a href="{% url 'customer:register' %}" class="prdduct-btn large-btn text-white bg-red fs-poppins mt-5 " >Register Now</a>
+      </div>
+      </div>
+      </div>
+      
+
+<!-- <div class="container p-3 pb-4">
+
+    <div class=" mt-3  ">
+        <div class="card-body ">
+            <h2 class="fs-montserrat fs-300 uppercase mx-auto text">Login  </h2>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                  
+                  <input type="text" class=" block bg-gray w-100" id="username" name="username">
+                  <label for="username" class="form-label fs-montserrat fs-100">Username</label>
+                  
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label fs-montserrat fs-100">Password</label>
+                  <input type="password" class="inputField block bg-gray w-100" id="exampleInputPassword1" name="password">
+                </div>
+                
+                  
+                <button type="submit" class="prdduct-btn large-btn text-white bg-blue fs-poppins">Submit</button>
+              </form>
+              Or <br>
+              <br>
+              <a href="{% url 'customer:register' %}" class="prdduct-btn large-btn text-white bg-red fs-poppins" >Register Now</a>
+        </div>
+    </div>
+</div> -->
+{% endblock content %}

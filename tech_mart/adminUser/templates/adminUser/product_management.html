@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+<h2 class='d-flex justify-content-between'>
+            <button class="btn btn-primary w-100 mb-2" >
+                Products
+                <button class="btn btn-success w-25 mb-2" type="button" ><a href="{% url 'adminUser:create_product' %}" class="text-white">Create New <i><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" id="plus"><g transform="translate(936.994 -962.858)"><circle cx="-928.994" cy="970.858" r="7" fill="#e9eded" color="#000" overflow="visible" style="marker:none"></circle><path fill="#25b39e" fill-rule="evenodd" stroke="#25b39e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m-932.488 970.864 6.987-.011m-3.499-3.488.011 6.987"></path></g></svg></i></a>
+            </button></button>
+        </h2>
+        <div >
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Stock</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                     
+                    
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.id }}</td>
+                            <td> <img src="{{product.images.first.image.url}}" width="100px" height="100px" alt="image"></td>
+                            <td>{{ product.name }}</td>
+                            <td>₹{{ product.price_after_discount }}</td>
+                            <td>{{ product.category.name }}</td>
+                            <td>{{ product.stock }}</td>
+                            <td><a href="{% url 'adminUser:edit_product' product.id %}" class="btn btn-warning"><i
+                                class="fa-solid fa-pen-to-square"></i></a></td>
+                            <td><a href="{% url 'adminUser:delete_product' product.id %}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a></td>
+                            
+                          
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                
+            </table>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if products.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ products.previous_page_number }}">previous</a>
+                    {% endif %}
+        
+                    <span class="current">
+                        Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                    </span>
+        
+                    {% if products.has_next %}
+                        <a href="?page={{ products.next_page_number }}">next</a>
+                        <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

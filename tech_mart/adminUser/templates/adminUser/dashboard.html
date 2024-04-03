@@ -1,0 +1,172 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h2>
+            <button class="btn btn-primary w-100 mb-2" type="button" data-toggle="collapse" data-target="#usersTable" aria-expanded="true" aria-controls="usersTable">
+                Users
+            </button>
+        </h2>
+        <div class="collapse " id="usersTable">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>is_active</th>
+                        <th>Deactivate/Activate</th>
+                        <th>Verified</th>
+                        
+                        
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.first_name }}</td>
+                            <td>{{ user.last_name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.is_active }}</td>
+                            <td>
+                                <form method="post" action="{% url 'adminUser:toggle_customer_status' user.id %}">
+                                    {% csrf_token %}
+                                    <input type="checkbox" name="confirm_deactivation">
+                                    <button type="submit" class="btn btn-warning">
+                                        {% if user.is_active %}
+                                            Deactivate
+                                        {% else %}
+                                            Activate
+                                        {% endif %}
+                                    </button>
+                                </form>
+                            </td>
+                            <td>{{ user.is_verified }}</td>
+                            
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+        </div>
+        
+        <button class="btn btn-primary w-100 mb-2" type="button" data-toggle="collapse" data-target="#ordersTable" aria-expanded="true" aria-controls="usersTable">
+            Orders
+        </button>
+        <div class="collapse " id="ordersTable">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Completed</th>
+                        <th>Payment</th>
+                        <th>Products</th>
+                        <th>Total</th>
+                        <th>User</th>
+                        </tr>
+                        {% for order in orders %}
+                        <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.date_ordered }}</td>
+                        <td>{{ order.complete }}</td>
+                        <td>{{order.payment_method}}</td>
+                        <td>
+                            {% for product in order.orderitem_set.all %}
+                            {{ product.product.name }} <br>
+                        {% endfor %}
+                           <td>{{order.total}}</td>
+                           <td>{{order.customer}}</td>
+                        </tr>
+                    
+                        {% endfor %}
+                </tbody>
+                
+            </table>
+        </div>
+
+        <h2 class='d-flex justify-content-between'>
+            <button class="btn btn-primary w-100 mb-2" type="button" data-toggle="collapse" data-target="#productsTable" aria-expanded="true" aria-controls="productsTable">
+                Products
+                <button class="btn btn-success w-25 mb-2" type="button" ><a href="{% url 'adminUser:create_product' %}" class="text-white">Create New <i><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" id="plus"><g transform="translate(936.994 -962.858)"><circle cx="-928.994" cy="970.858" r="7" fill="#e9eded" color="#000" overflow="visible" style="marker:none"></circle><path fill="#25b39e" fill-rule="evenodd" stroke="#25b39e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m-932.488 970.864 6.987-.011m-3.499-3.488.011 6.987"></path></g></svg></i></a>
+            </button></button>
+        </h2>
+        <div class="collapse " id="productsTable">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Stock</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                     
+                    
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.id }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>₹{{ product.price_after_discount }}</td>
+                            <td>{{ product.category.name }}</td>
+                            <td>{{ product.stock }}</td>
+                            <td><a href="{% url 'adminUser:edit_product' product.id %}" class="btn btn-warning">edit</a></td>
+                            <td><a href="{% url 'adminUser:delete_product' product.id %}" class="btn btn-danger">delete</a></td>
+                            
+                          
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                
+            </table>
+        </div>
+
+        <h2 class="d-flex ">
+            <button class="btn btn-primary w-100 mb-2" type="button" data-toggle="collapse" data-target="#categoriesTable" aria-expanded="true" aria-controls="categoriesTable">
+                Categories
+                <button class="btn btn-success w-25 mb-2 " type="button" ><a href="{% url 'adminUser:create_category' %}" class="text-white">Create New <i><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" id="plus"><g transform="translate(936.994 -962.858)"><circle cx="-928.994" cy="970.858" r="7" fill="#e9eded" color="#000" overflow="visible" style="marker:none"></circle><path fill="#25b39e" fill-rule="evenodd" stroke="#25b39e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m-932.488 970.864 6.987-.011m-3.499-3.488.011 6.987"></path></g></svg></i></a></button>
+            </button>
+           
+        </h2>
+        <div class="collapse " id="categoriesTable">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>{{ category.id }}</td>
+                            <td>{{ category.name }}</td>
+                            <td><a href="{% url 'adminUser:edit_category' category.id %}" class="btn btn-warning">edit</a></td>
+                            <td><a href="{% url 'adminUser:delete_category' category.id %}" class="btn btn-danger">delete</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                
+            </table>
+            </table>
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+{% endblock %}

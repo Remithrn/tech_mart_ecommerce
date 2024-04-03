@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-3">
+        <div class="">
+          <h2 class="text-center fs-montserrat">ORDERS</h2>
+  
+          <div class="row">
+            {% for order in orders %}
+              <div class="col-4 grid">
+                <div class="card m-1">
+                  <div class="card-body">
+                    <h5 class="card-title">Order ID: {{ order.id }}</h5>
+                    <p class="card-text">Order Date: {{ order.date_ordered }}</p>
+                    <p class="card-text">Order Total: ${{ order.total_price }}</p>
+                    <p class="card-text">Delivery Status: {{ order.delivery_status }}</p>
+                    <p class="card-text">Payment Method: {{ order.payment_method }}</p>
+                    <p class="card-text">Customer: {{ order.customer }}</p>
+                    <p class="card-text">Payment Status: {{ order.payment_status }}</p>
+                    <p class="card-text">Is Returned: {{ order.is_returned }}</p>
+                    
+                    {% if order.is_cancelled %}
+                    <p class="card-text text-danger">Order Status: Cancelled </p>
+                    {% else %}
+                    <p class="card-text">Order Status: Not Cancelled </p>
+                    {% endif %}
+  
+                    <p class="card-text">Detail View: <a href="{% url 'orders:order_details' order.id %}">Click Here</a></p>
+                    <p class="card-text">Edit: <a href="{% url 'adminUser:edit_order' order.id %}">Click Here</a></p>
+                    
+                    <div class="row d-flex">
+                      {% for product in order.order_items.all %}
+                        <div class="col-md-4 grid">
+                          <img src="{{ product.product.images.first.image.url }}" alt="{{ product.product.name }}">
+                          {{ product.product.name | truncatechars:20 }}
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <p>No orders yet</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if orders.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ orders.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+            </span>
+
+            {% if orders.has_next %}
+                <a href="?page={{ orders.next_page_number }}">next</a>
+                <a href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock content %}

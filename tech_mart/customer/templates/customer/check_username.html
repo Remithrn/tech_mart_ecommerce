@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href='{% static "css/form.css" %}' />
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script defer src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
+{% endblock css %}
+
+{% block content %}
+<div class="container">
+  <div class="">
+    <div class="">
+      <h2>Register Now</h2>
+      <form action="" method="POST" >
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="input-data">
+            <input type="text" name="{{ form.first_name.name }}" required />
+            <div class="underline"></div>
+            <label for="{{ form.first_name.name }}">First Name</label>
+            {% if form.first_name.errors %}
+            <div class="error">
+              {{ form.first_name.errors }}
+              
+            </div>
+            {% endif %}
+          </div>
+          <div class="input-data">
+            <input type="text" name="{{ form.last_name.name }}" required />
+            <div class="underline"></div>
+            <label for="{{ form.last_name.name }}">Last Name</label>
+            {% if form.last_name.errors %}
+            <div class="error">
+              {{ form.last_name.errors }}
+             
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-data">
+            <input type="text" name="{{ form.email.name }}" required />
+            <div class="underline"></div>
+            <label for="{{ form.email.name }}">Email</label>
+            {% if form.email.errors %}
+            <div class="error">
+              {{ form.email.errors }}
+              
+            </div>
+            {% endif %}
+          </div>
+          <div class="input-data">
+            <input type="text" name="{{ form.phone_number.name }}" required />
+            <div class="underline"></div>
+            <label for="{{ form.phone_number.name }}">Phone Number</label>
+            {% if form.phone_number.errors %}
+            <div class="error">
+              {{ form.phone_number.errors }}
+              
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-data">
+            <input type="text" name="{{ form.username.name }}" required hx-post="{% url 'customer:check_username' %}" hx-target="#username_result"   hx-trigger="input change delay:1000ms" autocomplete="off" />
+            
+            <div class="underline"></div>
+            <label for="{{ form.username.name }}">Username</label>
+            <div id="username_result"></div>
+            {% if form.username.errors %}
+            <div class="error">
+              {{ form.username.errors }}
+              
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-data">
+              <input type="password" name="{{ form.password1.name }}" id="password1" required hx-post="{% url 'customer:validate_passwords' %}" hx-target="#passwordValidationResult" hx-trigger="keyup"/>
+              <div class="underline"></div>
+              <label for="{{ form.password1.name }}">Password</label>
+              {% if form.password1.errors %}
+              <div class="error">
+                {{ form.password1.errors }}
+                
+              </div>
+              {% endif %}
+          </div>
+          <div class="input-data">
+              <input type="password" name="{{ form.password2.name }}" id="password2" required hx-post="{% url 'customer:validate_passwords' %}" hx-target="#passwordValidationResult" hx-trigger="keyup"/>
+              <div class="underline"></div>
+              <label for="{{ form.password2.name }}">Confirm Password</label>
+              {% if form.password2.errors %}
+              <div class="error">
+                {{ form.password2.errors }}
+                
+              </div>
+              {% endif %}
+          </div>
+        </div>
+        <div id="passwordValidationResult"></div>
+
+        <button type="submit" class="bg-green large-btn text-white mt-2">
+          Verify
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

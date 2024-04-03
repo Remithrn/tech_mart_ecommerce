@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h2>Create new </h2>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+              
+
+    <div class="form-group">
+                    {{ form_image.image.label_tag }}
+                    <input type="file" name="{{ form_image.image.name }}" multiple class="form-control">
+                    
+                </div>
+
+
+                <button type="submit" class="btn btn-success mt-2">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

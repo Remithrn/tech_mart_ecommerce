@@ -1,0 +1,69 @@
+
+
+{% extends "base.html" %} 
+{% load static %} 
+
+{% block css %}
+  <link rel="stylesheet" href='{% static "css/form.css" %}' />
+{% endblock css %} 
+
+{% block content %}
+  <div class="container">
+    <div class="card-body">
+      <h2>{{ operation }} Coupons</h2>
+      <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %} 
+
+        {% for field in form %}
+          {% if field.name not in ' description is_expired valid_from valid_to' %}
+            <div class="form-row">
+              <div class="input-data ">
+                {{ field }}
+                <div class="underline"></div>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {% if field.errors %}
+                <div class="error">
+                  {{ field.errors }}
+                </div>
+                  
+                {% endif %}
+              </div>
+            </div>
+          {% elif field.name == 'description' %}
+            <div class="form-row">
+              <div class="input-data textarea">
+                {{ field }}
+                
+                <div class="underline"></div>
+                <label for="{{ field.id_for_label }}">{{ field.label }} here</label>
+                {% if field.errors %}
+                <div class="error block">
+                  {{ field.errors }}
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          {% else %}
+            <div class="form-row">
+              <div class="">{{ field.label }}</div>
+              <br />{{ field }}
+              {% if field.errors %}
+              <div class="error">
+                {{ field.errors }}
+              </div>
+                
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+       
+
+       
+        <button type="submit" class="btn btn-success mt-2">
+          {{ operation }}
+        </button>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+           <h2>Deactivate Customer</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Deactivate Customer</button>
+        <a href="{% url 'adminUser:dashboard' %}">Cancel</a>
+    </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

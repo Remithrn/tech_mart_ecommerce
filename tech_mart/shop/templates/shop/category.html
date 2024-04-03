@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href='{% static "css/form.css" %}'>
+<link rel="stylesheet" href="{% static 'css/shop.css' %}" />
+<link rel="stylesheet" href="{% static 'css/index.css' %}" />
+<script src="{% static 'js/index.js' %}" defer></script>
+<script src="{% static 'js/shop.js' %}" defer></script>
+<!-- custon style Sheet & JavaScript -->
+{% endblock css %}
+
+   
+    
+    
+  
+
+    
+
+
+
+    <!-- ===================Shop Feature Section============================ -->
+
+    <section class="shop-feature bg-gray grid">
+      <div>
+        <p class="fs-montserrat text-black">
+          Home <span aria-hidden="true" class="margin">></span> Product
+        </p>
+      </div>
+      <h2 class="fs-poppins fs-300 bold-700">Product</h2>
+    </section>
+
+    <!-- ===================Section 2---------------------- -->
+
+   
+
+    <main class="shop-main-container grid">
+      <!-- -------------------Inner Section=============== -->
+
+      <div>
+        <div class="shop-title flex">
+          <div>
+            <h2 class="fs-poppins fs-300">Shop</h2>
+            <p class="fs-montserrat"></p>
+          </div>
+          <div>
+            <div>
+          
+              
+            
+            </div>
+          
+            
+          </div>
+        </div>
+        <!-- ---------------End----Inner Section=============== -->
+
+        <!-- ==============Shop-product====================== -->
+         
+         
+        <section class="shop-product grid">
+         {% for product in products %}
+          <div class="product-list grid">
+            <img src="{{product.images.first.image.url}}" alt=""  style="max-width: 20vw;"/>
+            <p class="fs-montserrat bold-600">{{product.name}}</p>
+            <div class="shop-btn flex">
+              <button class="bg-red text-white fs-montserrat "><a class="text-white" href="{% url 'shop:detail' product.slug %}">Add To Cart</a>
+              </button>
+              {% if product.price_after_discount < product.price %}
+        
+        <p class="fs-poppins bold-500">$ <span class="text-decoration-line-through"> {{product.price}} </span> {{product.price_after_discount}} </p>
+
+        {% else %}
+        
+        <p class="fs-poppins bold-500">${{product.price}}</p>
+            {% endif %}
+            </div>
+
+            <!-- ===============Pop-Up========================== -->
+
+            <div class="pup-up">
+                <p class="fs-poppins">NEW</p>
+            </div>
+
+            
+            <!-- ===============Pop-Up========================== -->
+
+          </div>
+          {% endfor %}
+        
+         
+        </section>
+       <!-- Pagination -->
+       <div>
+<div class="pagination fs-poppins flex">
+  {% if products.has_previous %}
+      <a href="?page=1" class="bg-red text-white active bold-800">&laquo; first</a>
+      <a href="?page={{ products.previous_page_number }}" class="bold-800 text-black">previous</a>
+  {% else %}
+      <span class="disabled">&laquo; first</span>
+      <span class="disabled">previous</span>
+  {% endif %}
+
+  <span class="current bold-800 text-black">
+      Page {{ products.number }} of {{ products.paginator.num_pages }}.
+  </span>
+
+  {% if products.has_next %}
+      <a href="?page={{ products.next_page_number }}" class="bold-800 text-black">next</a>
+      <a href="?page={{ products.paginator.num_pages }}" class="bg-red text-white active bold-800">last &raquo;</a>
+  {% else %}
+      <span class="disabled">next</span>
+      <span class="disabled">last &raquo;</span>
+  {% endif %}
+</div>
+</div>
+      </div>
+      <!-- ==============Shop-product====================== -->
+      <section>
+       
+
+        <aside class="">
+       
+            {% if form %}
+               
+            <form method="get" class=" flex d-flex flex-column gap-4">
+              <form method="get">
+                <div class="search-box">
+                  <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
+                  <input type="text" class="input-search"  name="search" id="search" value="{{ request.GET.search }}" placeholder="Type to Search...">
+                </div>
+                        <div >
+               </form>
+              <h2>Filter</h2>
+              <div class="mt-3">{{ form.as_p }}</div>
+              
+              <button type="submit" class="btn btn-warning">Filter</button>
+            </form>
+            {% endif %}
+            <!-- <h3 class=" fs-poppins bold-700 fs-200">Product Categories</h3>
+            <i id="arrow" class="uil uil-angle-right" data-category="false"></i>
+          </div>
+
+          <div class="shop-category-list">
+            <ul id="side-nav" class="sidebar-nav grid" data-category="false">
+                <li><a class="fs-montserrat text-black bold-500" href="{% url 'shop:allProdCat' %}"
+                    >all Products</a
+                  ></li>
+            {% for category in categories %}
+            <li>
+                <a class="fs-montserrat text-black bold-500" href="{% url 'shop:by_category' category.slug %}"
+                  >{{category.name}}</a
+                >
+              </li>
+            {% endfor %}
+            
+              
+            </ul> -->
+          </div>
+        </aside>
+      </section>
+    </main>
+    
+
+
+
+
+
+
+
+
+    <!-- =====================Footer Section================ -->
+
+    
+
+
+{% endblock content %}

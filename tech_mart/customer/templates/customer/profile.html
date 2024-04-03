@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/shop.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/product.css' %}" />
+  <script src="{% static 'js/shop.js' %}" defer></script>
+
+{% endblock css %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="text-center fs-montserrat">PROFILE</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <td><span class="fs-montserrat bold-600">Username:</span></td>
+              <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+              <td><span class="fs-montserrat bold-600">Email:</span></td>
+              <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+              <td><span class="fs-montserrat bold-600">First Name:</span></td>
+              <td>{{ user.first_name }}</td>
+            </tr>
+            <tr>
+              <td><span class="fs-montserrat bold-600">Last Name:</span></td>
+              <td>{{ user.last_name }}</td>
+            </tr>
+            <tr>
+              <td><span class="fs-montserrat bold-600">Total Orders:</span></td>
+              <td>{{ order_count }}</td>
+            </tr>
+            <tr>
+              <td><span class="fs-montserrat bold-600">Customer addresses</span></td>
+              <td>
+                {% for address in customer_addresses %}
+                {{address}}
+                <div class="float-right">
+                    <a href="{% url 'customer:edit_address' address.id %}" class="btn btn-warning"><i
+                            class="fa-solid fa-pen-to-square"></i> </a>
+                    <a href="{% url 'customer:delete_address' address.id %}" class="btn btn-danger"><i
+                            class="fa-solid fa-trash-can"></i> </a>
+                </div>
+                <hr>
+                {% endfor %}
+                <a href="{% url 'customer:add_new_address' %}" class="btn btn-secondary">add new</a>
+            </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-12 d-flex flex-column gap-1">
+        <h2 class="text-center">ACTIONS</h2>
+        <button class="large-btn bg-green"><a href="{% url 'customer:change_password' %}" class="text-white">Change Password</a></button>
+        <button class="large-btn bg-green"><a href="{% url 'customer:edit_profile' %}" class="text-white">Edit Profile</a></button>
+        <button class="large-btn bg-green"><a href="{% url 'orders:wallet' %}" class="text-white">view Wallet</a></button>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="">
+        <h2 class="text-center fs-montserrat">ORDERS</h2>
+
+        <div class="row">
+          {% for order in orders %}
+          {% if not order.is_returned %}
+          
+            
+         
+            <div class="col-4 grid">
+              <div class="card m-1">
+                <div class="card-body">
+                  <h5 class="card-title">Order ID: {{ order.id }}</h5>
+                  <p class="card-text">Order Date: {{ order.date_ordered }}</p>
+                  <p class="card-text">Order Total: ${{ order.total_price }}</p>
+                  <p class="card-text">Delivery Status: {{ order.delivery_status }}</p>
+                  <p class="card-text">Payment Method: {{ order.payment_method }}</p>
+                  <p class="card-text">Customer: {{ order.customer }}</p>
+                    <p class="card-text">Payment Status: {{ order.payment_status }}</p>
+                    {% if order.payment_status != "Paid" and order.is_cancelled == False %}
+                    <p class="card-text text-danger">Order Status: Not Paid </p>
+                    <a href="{% url 'orders:change_payment_method' order.id %}" class="btn btn-success">Pay now</a>
+                      
+                    {% endif %}
+                  {% if order.is_cancelled %}
+                  <p class="card-text text-danger">Order Status: Cancelled </p>
+                  
+                  {% else %}
+                  <p class="card-text">Order Status: Not Cancelled </p>
+                  {% endif %}
+                  
+                  {% if order.total_discount > 0 %}
+                    
+                  <p>You Saved: ${{order.total_discount}}</p>
+                  {% endif %}
+
+                  <p class="card-text">View Invoice: <a href="{% url 'orders:order_details' order.id %}">Click Here</a></p>
+                  
+                 
+
+                  <div class="row d-flex">
+                    {% for product in order.order_items.all %}
+                      <div class="col-md-4 grid">
+                        <img src="{{ product.product.images.first.image.url }}" alt="{{ product.product.name }}">
+                        {{ product.product.name | truncatechars:20 }}
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          {% empty %}
+            <p>No orders yet</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+ 
+  <div class="pagination">
+    <span class="step-links">
+        {% if orders.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ orders.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+        </span>
+
+        {% if orders.has_next %}
+            <a href="?page={{ orders.next_page_number }}">next</a>
+            <a href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
+<script>
+  function areYouSure(deleteUrl) {
+   console.log('clicked');
+  }
+</script>
+{% endblock content %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Wallet</h1>
+            <p>
+                Your wallet balance is <strong>{{ wallet.balance }}</strong>
+            </p>
+
+        </div>
+    </div>
+    <div class="row">
+        <h2>Wallet Orders</h2>
+        {% if wallet_order %}
+          <div class="table-responsive">
+            <table class="table table-striped table-responsive">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Order Date</th>
+                  <th>Total Price</th>
+                  <th>Delivery Status</th>
+                  <th>Payment Method</th>
+                  <th>Customer</th>
+                  <th>Payment Status</th>
+                  <th>Order Status</th>
+                  <th>Discount</th>
+                  <th>Order Details</th>
+                  <th>Products</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in wallet_order %}
+                  <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.date_ordered }}</td>
+                    <td>${{ order.total_price }}</td>
+                    <td>{{ order.delivery_status }}</td>
+                    <td>{{ order.payment_method }}</td>
+                    <td>{{ order.customer }}</td>
+                    <td>{{ order.payment_status }}</td>
+                    <td>
+                      {% if order.is_cancelled %}
+                        <span class="text-danger">Cancelled</span>
+                      {% else %}
+                        Not Cancelled
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if order.total_discount > 0 %}
+                        ${{ order.total_discount }}
+                      {% endif %}
+                    </td>
+                    <td><a href="{% url 'orders:order_details' order.id %}">View Details</a></td>
+                    <td>
+                      {% for product in order.order_items.all %}
+                        <div>
+                          <img src="{{ product.product.images.first.image.url }}" alt="{{ product.product.name }}" width="50">
+                          {{ product.product.name | truncatechars:20 }}
+                        </div>
+                      {% endfor %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- pagination -->
+          <div class="pagination">
+            <span class="step-links">
+              {% if wallet_order.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ wallet_order.previous_page_number }}">previous</a>
+              {% endif %}
+
+              <span class="current">
+                Page {{ wallet_order.number }} of {{ wallet_order.paginator.num_pages }}.
+              </span>
+
+              {% if wallet_order.has_next %}
+                <a href="?page={{ wallet_order.next_page_number }}">next</a>
+                <a href="?page={{ wallet_order.paginator.num_pages }}">last &raquo;</a>
+              {% endif %}
+            </span>
+          </div>
+        {% else %}
+          <p>No orders yet</p>
+        {% endif %}
+      </div>
+</div>
+{% endblock content %}

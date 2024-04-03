@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href='{% static "css/form.css" %}' />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock css %}
+
+{% block content %}
+<div class="container">
+  <div class="">
+    <div class="">
+      <h2>Register Now</h2>
+      <form action="" method="POST" x-data="registerForm()" x-on:submit.prevent="submitForm">
+
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="input-data">
+            <input type="text" name="{{ form.first_name.name }}" required x-model="firstName" />
+            <div class="underline"></div>
+            <label for="{{ form.first_name.name }}">First Name</label>
+            <div class="error" x-text="errors.first_name"></div>
+            {% if form.first_name.errors %}
+            {% for error in form.first_name.errors %}
+            <div class="error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+          </div>
+          <div class="input-data">
+            <input type="text" name="{{ form.last_name.name }}" required x-model="lastName" />
+            <div class="underline"></div>
+            <label for="{{ form.last_name.name }}">Last Name</label>
+            <div class="error" x-text="errors.last_name"></div>
+            {% if form.last_name.errors %}
+            {% for error in form.last_name.errors %}
+            <div class="error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-data">
+            <input type="text" name="{{ form.email.name }}" x-model="email" required />
+            <div class="underline"></div>
+            <label for="{{ form.email.name }}">Email</label>
+            <div class="error" x-text="errors.email"></div>
+            {% if form.email.errors %}
+            {% for error in form.email.errors %}
+            <div class="error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+          </div>
+          <div class="input-data">
+            <input type="text" name="{{ form.phone_number.name }}" required x-model="phoneNumber" />
+            <div class="underline"></div>
+            <label for="{{ form.phone_number.name }}">Phone Number</label>
+            <div class="error" x-text="errors.phone_number"></div>
+            {% if form.phone_number.errors %}
+            {% for error in form.phone_number.errors %}
+            <div class="error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-data">
+            <input type="text" name="{{ form.username.name }}" required hx-post="{% url 'customer:check_username' %}"
+              hx-target="#username_result" hx-trigger="input change delay:1000ms" autocomplete="off" />
+            <div class="underline"></div>
+            <label for="{{ form.username.name }}">Username</label>
+            <div id="username_result"></div>
+            <div class="error" x-text="errors.username"></div>
+            {% if form.username.errors %}
+            {% for error in form.username.errors %}
+            <div class="error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-data">
+            <input type="password" name="{{ form.password1.name }}" id="password1" required
+              hx-post="{% url 'customer:validate_passwords' %}" hx-target="#passwordValidationResult"
+              hx-trigger="keyup" />
+            <div class="underline"></div>
+            <label for="{{ form.password1.name }}">Password</label>
+            <div class="error" x-text="errors.password1"></div>
+            {% if form.password1.errors %}
+            {% for error in form.password1.errors %}
+            <div class="error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+          </div>
+          <div class="input-data">
+            <input type="password" name="{{ form.password2.name }}" id="password2" required
+              hx-post="{% url 'customer:validate_passwords' %}" hx-target="#passwordValidationResult"
+              hx-trigger="keyup" />
+            <div class="underline"></div>
+            <label for="{{ form.password2.name }}">Confirm Password</label>
+            <div class="error" x-text="errors.password2"></div>
+            {% if form.password2.errors %}
+            {% for error in form.password2.errors %}
+            <div class="error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <div id="passwordValidationResult"></div>
+
+        <button class="bg-green large-btn text-white mt-2">
+          Verify
+        </button>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function registerForm() {
+    const usernameResult = document.querySelector('#username_result');
+    const passwordResult = document.querySelector('#passwordValidationResult');
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    return {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      username: '',
+      password1: '',
+      password2: '',
+      errors: {
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone_number: '',
+      },
+      validateFields() {
+        // Reset errors
+        this.errors = {
+          first_name: '',
+          last_name: '',
+          email: '',
+          phone_number: '',
+          username: '',
+          password1: '',
+          password2: '',
+        };
+
+
+
+        // Perform field validations here
+        if (!this.firstName.trim()) {
+          this.errors.first_name = 'First name is required';
+          console.log('First name is required');
+          console.log(this.errors);
+
+        }
+        else if (this.firstName.length < 3 || this.firstName.length > 20) {
+          this.errors.first_name = 'First name must be between 3 and 20 characters';
+          console.log('First name must be between 3 and 20 characters');
+
+        }
+        if (!this.lastName.trim()) {
+          this.errors.last_name = 'Last name is required';
+          console.log('Last name is required');
+
+        }
+        else if (this.lastName.length < 3 || this.lastName.length > 20) {
+          this.errors.last_name = 'Last name must be between 3 and 20 characters';
+          console.log('Last name must be between 3 and 20 characters');
+
+        }
+        if (!this.email.trim()) {
+          this.errors.email = 'Email is required';
+          console.log('email error', this.email);
+
+        } else if (!emailRegex.test(this.email)) {
+          this.errors.email = 'Email is invalid';
+          console.log('Email is invalid');
+
+        }
+        if (!this.phoneNumber.trim()) {
+          this.errors.phone_number = 'Phone number is required';
+          console.log('Phone number is required');
+
+        }
+        else if (this.phoneNumber.length < 10 || this.phoneNumber.length > 15) {
+          this.errors.phone_number = 'Phone number must be between 10 and 15 characters';
+          console.log('Phone number must be between 10 and 15 characters');
+
+        }
+        if (!usernameResult.innerText.includes('Username available')) {
+          this.errors.username = 'Username is already taken';
+
+        }
+        if (!passwordResult.innerText.includes('Passwords match')) {
+          this.errors.password1 = 'check password errors';
+
+        }
+
+
+        const hasErrors = Object.values(this.errors).some(error => error !== '');
+
+        return !hasErrors;
+      },
+      submitForm(event) {
+
+        if (!this.validateFields()) {
+          
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Please fix errors before submitting",
+
+          });
+          event.preventDefault(); // Prevent form submission if fields are not valid
+          return;
+        } else {
+          event.target.submit();
+
+        }
+      }
+    };
+  }
+</script>
+
+{% endblock content %}

@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<main class="hero-section">
+  <div>
+    <h1 class="fs-200 fs-poppins">
+      Beats Solo
+      <span class="block lineheight fs-300 bold-900 big-wireless fs-poppins">Wireless</span><span
+        class="text-white fs-900 uppercase lineheight-2 bold-bolder fs-poppins">HeadPhone</span>
+    </h1>
+    <img src="{% static '/image/headphones.png' %}" alt="" />
+  </div>
+  <div class="hero-inner flex">
+    <div>
+      <button class="large-btn bg-red text-white fs-poppins fs-50">
+        <a class="text-white" href="{% url 'shop:by_category' categories.3.slug  %}">Browse Category
+          {{categories.3.name}}</a>
+      </button>
+    </div>
+    <div class="hero-info">
+      <h4 class="fs-montserrat">Description</h4>
+      <p class="fs-montserrat">
+        There are many variations passages of Lorem Ipsum available, but the
+        majority have suffered alteration
+      </p>
+    </div>
+  </div>
+</main>
+
+<!-- =================Product Section======================= -->
+
+<section class="product-section">
+  <div class="category bg-black grid">
+    <div>
+      <h3 class="text-white fs-50 fs-montserrat bold">
+        Enjoy <span class="block fs-300 fs-poppins bold">With</span><span
+          class="earphone uppercase fs-400 fs-montserrat bold-900 lineheight">Earphone</span>
+      </h3>
+      <button class="prdduct-btn large-btn text-white bg-red fs-montserrat">
+        <a class="text-white" href="{% url 'shop:by_category' categories.0.slug  %}">Browse {{categories.0.name}}</a>
+      </button>
+    </div>
+    <div class="product-img1">
+      <img src="{% static '/image/h.png' %}" alt="" />
+    </div>
+  </div>
+  <div class="category bg-yellow grid">
+    <div>
+      <h3 class="text-white fs-50 fs-montserrat bold">
+        New <span class="block fs-300 fs-poppins bold">Wear</span><span
+          class="earphone uppercase fs-400 fs-montserrat bold-900 lineheight">Gadget</span>
+      </h3>
+      <a class="text-red" href="{% url 'shop:by_category' categories.1.slug  %}">
+        <button class="prdduct-btn large-btn text-yellow bg-white fs-montserrat">
+          Browse {{categories.1.name}}
+        </button></a>
+    </div>
+    <div class="product-img2">
+      <img src="{% static '/image/w.png' %}" alt="" />
+    </div>
+  </div>
+  <div class="category bg-red grid">
+    <div>
+      <h3 class="text-white fs-50 fs-montserrat bold">
+        Trend <span class="block fs-300 fs-poppins bold">Devices</span><span
+          class="earphone uppercase fs-400 fs-poppins bold-900 lineheight">Laptop</span>
+      </h3>
+      <a href="{% url 'shop:by_category' categories.4.slug  %}">
+        <button class="prdduct-btn large-btn text-red bg-white fs-montserrat">
+          Browse {{categories.4.name}}
+        </button></a>
+    </div>
+    <div class="product-img3">
+      <img src="{% static '/image/Laptop.png' %}" alt="" />
+    </div>
+  </div>
+  <div class="category bg-gray grid">
+    <div>
+      <h3 class="text-black fs-50 fs-poppins bold">
+        Best
+        <span class="block fs-300 fs-poppins bold text-black">Gaming</span><span
+          class="earphone uppercase fs-400 fs-poppins bold-900 lineheight">Console</span>
+      </h3>
+      <a class="text-red" href="{% url 'shop:by_category' categories.2.slug  %}">
+        <button class="prdduct-btn large-btn text-red bg-white fs-montserrat">
+          Browse {{categories.2.name}}
+        </button></a>
+    </div>
+    <div class="product-img4">
+      <img src="{% static '/image/gam.png' %}" alt="" />
+    </div>
+  </div>
+  <div class="category bg-green grid">
+    <div>
+      <h3 class="text-white fs-50 fs-poppins bold">
+        Play <span class="block fs-300 fs-poppins bold">Game</span><span
+          class="earphone uppercase fs-400 fs-poppins bold-900 lineheight">Oculus</span>
+      </h3>
+      <a class="text-red" href="{% url 'shop:by_category' categories.6.slug  %}">
+        <button class="prdduct-btn large-btn text-green bg-white fs-montserrat">
+          Browse {{categories.6.name}}
+        </button></a>
+    </div>
+    <div class="product-img5">
+      <img src="{% static '/image/man2.png' %}" alt="" />
+    </div>
+  </div>
+  <div class="category bg-blue grid">
+    <div>
+      <h3 class="text-white fs-50 fs-poppins bold">
+        New <span class="block fs-300 fs-poppins bold">Amazon</span><span
+          class="earphone uppercase fs-400 fs-poppins bold-900 lineheight">speaker</span>
+      </h3>
+      <a class="text-red" href="{% url 'shop:by_category' categories.5.slug  %}">
+        <button class="prdduct-btn large-btn text-blue bg-white fs-montserrat">
+          Browse {{categories.5.name}}
+        </button></a>
+    </div>
+    <div class="product-img6">
+      <img src="{% static '/image/mus.png' %}" alt="" />
+    </div>
+  </div>
+</section>
+
+<!-- ========================================= -->
+<!-- =============Service section============== -->
+
+<section class="service-section">
+  <div class="service">
+    <img src="{% static '/image/free.svg' %}" alt="" />
+    <div class="service-info">
+      <h3 class="fs-poppins fs-200">Free Shippng</h3>
+      <p class="fs-montserrat fs-50">Free Shipping On All Order</p>
+    </div>
+  </div>
+  <div class="service">
+    <img src="{% static '/image/sett.svg' %}" alt="" />
+    <div class="service-info">
+      <h3 class="fs-poppins fs-200">Money Guarantee</h3>
+      <p class="fs-montserrat fs-50">30 Day Money Back</p>
+    </div>
+  </div>
+  <div class="service">
+    <img src="{% static '/image/supt.svg' %}" alt="" />
+    <div class="service-info">
+      <h3 class="fs-poppins fs-200">Online Support 24/7</h3>
+      <p class="fs-montserrat fs-50">Technical Support 24/7</p>
+    </div>
+  </div>
+  <div class="service">
+    <img src="{% static '/image/pay.svg' %}" alt="" />
+    <div class="service-info">
+      <h3 class="fs-poppins fs-200">Secure Payment</h3>
+      <p class="fs-montserrat fs-50">All Cards Accepted</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================Feature Section============= -->
+
+<section class="feature-section bg-red">
+  <div class="feature-one grid">
+    <img src="{% static '/image/p-1.png' %}" alt="" />
+    <p class="text-white uppercase">20% OFF</p>
+    <p class="font-size lineheight fs-500 text-white fs-poppins bold-900 uppercase">
+      fine <span class="smile">smile</span>
+    </p>
+    <p class="text-white fs-poppins fs-50">15 Nov To & Dec</p>
+  </div>
+  <div class="feature-info">
+    <h2 class="fs-200 text-white fs-poppins bold-500">Beats Solo Air</h2>
+    <p class="fs-poppins fs-300 bold-800 text-white">Summer Sale</p>
+    <p class="fs-montserrat text-white fs-50">
+      Company that’s grown from 270 to 480 employees in the last 12 months.
+    </p>
+    <button class="prdduct-btn large-btn text-red bg-white fs-poppins">
+      Shop
+    </button>
+  </div>
+</section>
+<!-- =============================Best Sellar================== -->
+
+<section class="best-product container">
+  <h2 class="letter-spacing bold-800 fs-poppins">Best Seller Products</h2>
+  <p class="fs-montserrat fs-100">
+    speakerThere are many variations passages
+  </p>
+</section>
+
+<!-- ===========================Heading======================== -->
+<section class="best-Seller">
+  {% for product in products %}
+  <div class="product grid">
+    <img src="{{product.images.first.image.url}}" alt="" />
+    <p class="fs-poppins bold-500">{{product.name|truncatewords:10}}</p>
+
+    {% if product.price_after_discount < product.price %}
+
+    <p class="fs-poppins bold-500">$ <span class="text-decoration-line-through"> {{product.price}} </span>
+      {{product.price_after_discount}} </p>
+
+    {% else %}
+
+    <p class="fs-poppins bold-500">${{product.price}}</p>
+    {% endif %}
+    <!-- ---------------------------- -->
+    <div class="product-details grid bg-red">
+      <a href="{% url 'shop:detail' product.slug %}"><i class="text-white uil uil-shopping-cart-alt"></i></a>
+
+    </div>
+
+    <!-- ===================================== -->
+  </div>
+  {% endfor %}
+  <div class="product grid">
+
+
+    <!-- ===================================== -->
+  </div>
+
+
+
+
+
+
+</section>
+<div class="pagination fs-poppins flex">
+  <span class="current bold-800 text-black">
+    Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+  </span>
+
+  {% if is_paginated %}
+  {% if page_obj.has_previous %}
+  <a href="?page=1" class="bg-red text-white active bold-800">&laquo; first</a>
+  <a href="?page={{ page_obj.previous_page_number }}" class="bold-800 text-black">previous</a>
+  {% endif %}
+
+  {% if page_obj.has_next %}
+  <a href="?page={{ page_obj.next_page_number }}" class="bold-800 text-black">next</a>
+  <a href="?page={{ paginator.num_pages }}" class="bg-red text-white active bold-800">last &raquo;</a>
+  {% endif %}
+  {% endif %}
+</div>
+
+<!-- =========================================== -->
+<section class="feature-section bg-green">
+  <div class="feature-green feature-one grid">
+    <img src="{% static '/image/p12.png' %}" alt="" />
+    <p class="text-white uppercase">20% OFF</p>
+    <p class="font-size lineheight fs-500 text-white fs-poppins bold-900 uppercase">
+      HAPPY <span class="smile">HOURS</span>
+    </p>
+    <p class="text-white fs-poppins fs-50">15 Nov To & Dec</p>
+  </div>
+  <div class="feature-info">
+    <h2 class="fs-200 text-white fs-poppins bold-500">Beats Solo Air</h2>
+    <p class="fs-poppins fs-300 bold-800 text-white">Summer Sale</p>
+    <p class="fs-montserrat text-white fs-50">
+      Company that’s grown from 270 to 480 employees in the last 12 months.
+    </p>
+    <button class="prdduct-btn large-btn text-green bg-white fs-poppins">
+      Shop
+    </button>
+  </div>
+</section>
+<!-- =========================================== -->
+{% endblock content %}

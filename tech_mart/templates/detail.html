@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="card border-info mb-3 mt-4" >
+        <div class="card-header">{{user.username}}</div>
+        <div class="card-body">
+          <h4 class="card-title">Password</h4>
+          <p class="card-text">{{user.password}}</p>
+          
+           {% if user.email %}
+           <h4 class="card-title">Email</h4>
+          <p class="card-text">{{user.email}} </p>
+           
+           {% endif %}
+
+           {% if user.is_superuser %}
+           <h4 class="card-title">IS A SUPERUSER</h4>
+           {% else %}
+           {% endif %}
+
+          <p class="card-text"><a href="{% url 'delete' user.id %}" class="btn btn-danger">delete</a></p>
+          <p class="card-text"><a href="{% url 'edit_user' user.id %}" class="btn btn-info">edit</a></p>
+         
+          
+        </div>
+      </div>
+</div>
+
+{% endblock content %}

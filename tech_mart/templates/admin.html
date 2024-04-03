@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>ADMIN PANEL</h1>
+    <div class="row">
+        {% for user in users %}
+        <div class="col-4">
+            
+            
+            
+            <div class="card border-success mb-3" >
+                <div class="card-header">User</div>
+                <div class="card-body">
+                  <h4 class="card-title">{{user.username}}</h4>
+                  <p class="card-text"><a href="{% url 'detail' user.id %}" class="btn btn-secondary ">open</a></p>
+                </div>
+        </div>
+        
+        
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+
+{% endblock content %}

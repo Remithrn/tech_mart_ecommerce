@@ -1,0 +1,23 @@
+<!-- Any template file -->
+
+<div id="carouselExampleDark" class="carousel carousel-dark slide pt-2">
+    <div class="carousel-inner">
+        {% for category in categories %}
+        
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ category.image.url }}" class="d-block w-100 px-auto px-2" alt="{{ category.name }}">
+                <div class="carousel-caption d-none d-md-block ">
+                    <h2 class="text-white fw-bold">{{ category.name }}</h2>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2 class="d-flex ">
+        <button class="btn btn-primary w-100 mb-2" >
+            Categories
+            <button class="btn btn-success w-25 mb-2 " type="button" ><a href="{% url 'adminUser:create_category' %}" class="text-white">Create New <i><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" id="plus"><g transform="translate(936.994 -962.858)"><circle cx="-928.994" cy="970.858" r="7" fill="#e9eded" color="#000" overflow="visible" style="marker:none"></circle><path fill="#25b39e" fill-rule="evenodd" stroke="#25b39e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m-932.488 970.864 6.987-.011m-3.499-3.488.011 6.987"></path></g></svg></i></a></button>
+        </button>
+       
+    </h2>
+    <div >
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                    <tr>
+                        <td>{{ category.id }}</td>
+                        <td>{{ category.name }}</td>
+                        <td><a href="{% url 'adminUser:edit_category' category.id %}" class="btn btn-warning"><i
+                            class="fa-solid fa-pen-to-square"></i></a></td>
+                        <td><a href="{% url 'adminUser:delete_category' category.id %}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            
+        </table>
+        </table>
+    </div>
+</div>
+{% endblock content %}

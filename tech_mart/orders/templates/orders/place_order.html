@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href='{% static "css/form.css" %}'>
+{% endblock css %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+    <div class="col-md-12">
+    <h1 class="text-center fs-montserrat fw-300">ORDER</h1>
+   
+    
+    <form id="address_seleect_form" action="" method="post">
+        {% csrf_token %}
+        <h2 class="uppercase fs-montserrat">select an address</h2>
+        <div >{{a_form.as_p}}</div>
+        {{form_payt.as_p}}
+        {% if form_payt.errors %}
+        <div class="alert alert-danger">
+            <strong>Error!</strong> Please fix the following errors:
+            <ul>
+                {% for error in form_pay.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+                </div>
+                {% endif %}
+                <input type="submit" class="btn btn-primary large-btn my-2 w-100" style="border-radius: 0;" value="Submit" />
+        
+    </form>
+    <div class="d-flex justify-content-center"><button id="toggle button" class="btn  btn-secondary mx-auto" style="border-radius: 0; ">Add New</button></div>
+  
+    <form method="POST" action="" id="address_form">
+        {% csrf_token %}
+    
+  
+    
+    <h3 class="uppercase fs-montserrat">Add New Address </h3>
+    <div >
+       
+        {% for field in form %}
+        <div class="form-row">
+          <div class="input-data">
+            {{ field }}
+            <div class="underline"></div>
+            <label for="{{ field.name }}">{{ field.label }}</label>
+          </div>
+        </div>
+      {% endfor %}
+
+    </div>
+
+    <br>
+    {{form_payt.as_p}}
+    {% if form_payt.errors %}
+    <div class="alert alert-danger">
+        <strong>Error!</strong> Please fix the following errors:
+        <ul>
+            {% for error in form_pay.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+<input type="submit" class="btn btn-primary large-btn my-2 w-100" style="border-radius: 0;" value="Submit" />
+    </form>
+    </div>
+    </div>
+    </div>
+
+<script>
+    document.getElementById("address_form").style.display = "none";
+    document.getElementById("toggle button").addEventListener("click", function(){
+    var x = document.getElementById("address_form");
+
+    var y = document.getElementById("address_seleect_form");
+    if (x.style.display === "none") {
+        y.style.display = "none";
+    x.style.display = "block";
+    document.getElementById("toggle button").innerHTML = "Add From Existing A ddress";
+    } else {
+    x.style.display = "none";
+    y.style.display = "block";
+    document.getElementById("toggle button").innerHTML = "Add New ";
+}})
+</script>
+
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href='{% static "css/form.css" %}'>
+{% endblock css %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center fs-montserrat fw-300">Choose Payment Method</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

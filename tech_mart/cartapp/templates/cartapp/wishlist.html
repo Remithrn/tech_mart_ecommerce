@@ -1,0 +1,50 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/shop.css' %}" />
+ <link rel="stylesheet" href="{% static 'css/product.css' %}" />
+<script src="{% static 'js/shop.js' %}" defer></script>
+{% endblock css %}
+{% block content %}
+<section class="shop-feature bg-gray grid">
+   <h2 class="fs-montserrat fs-300 bold-700">You Whishlist</h2>
+    
+  </section>
+<section class="shop-product grid container">
+    {% for product in products %}
+     <div class="product-list grid">
+       <img src="{{product.images.first.image.url}}" alt=""  style="max-width: 20vw;"/>
+       <p class="fs-montserrat bold-600">{{product.name}}</p>
+       <div class="shop-btn flex">
+         <button class="bg-red text-white fs-montserrat "><a class="text-white" href="{% url 'shop:detail' product.slug %}">Add To Cart</a>
+         </button>
+         {% if product.price_after_discount < product.price %}
+        
+        <p class="fs-poppins bold-500">$ <span class="text-decoration-line-through"> {{product.price}} </span> {{product.price_after_discount}} </p>
+
+        {% else %}
+        
+        <p class="fs-poppins bold-500">${{product.price}}</p>
+            {% endif %}
+            <a href="{% url 'cart:remove_from_wishlist' product.slug %}" class="custom_a"><i class="fa-solid fa-trash custom_icon"></i></a>
+       </div>
+
+       <!-- ===============Pop-Up========================== -->
+
+       <div class="pup-up">
+           <p class="fs-poppins">{{product.label}}</p>
+       </div>
+
+       
+       <!-- ===============Pop-Up========================== -->
+
+     </div>
+     {% endfor %}
+   
+    
+   </section>
+
+
+  
+{% endblock content %}

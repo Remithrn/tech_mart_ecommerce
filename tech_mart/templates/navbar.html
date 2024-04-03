@@ -1,0 +1,102 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg bg-white mb-3">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="#">
+
+      <img src="{% static '/image/logo2.png' %}" alt="Logo" class="d-inline-block align-text-top logo">
+
+
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse mr-3 " id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-5">
+        <li class="nav-item">
+          <a class="nav-link active fs-100 fs-montserrat bold-500" aria-current="page"
+            href="{% url 'shop:home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fs-100 fs-montserrat bold-500" href="{% url 'shop:allProdCat' %}">Shop</a>
+        </li>
+
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link fs-100 fs-montserrat bold-500 flex"
+            href="{% url 'customer:profile' %}">{{user.username}}|Profile</a>
+          {% if request.user.is_superuser %}
+
+        <li>
+          <div class="dropdown">
+            <button class="btn  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+              style="border-radius: 0%;">
+              Dashboard
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'adminUser:dashboard' %}">Users</a></li>
+              <li><a class="dropdown-item" href="{% url 'adminUser:products' %}">Products</a></li>
+              <li><a class="dropdown-item" href="{% url 'adminUser:categories' %}">Categories</a></li>
+              <li><a class="dropdown-item" href="{% url 'adminUser:orders' %}">Orders</a></li>
+              <li><a class="dropdown-item" href="{% url 'adminUser:coupons' %}">Coupons</a></li>
+              <li><a class="dropdown-item" href="{% url 'adminUser:sales_report' %}">Sales Report</a></li>
+            </ul>
+          </div>
+
+        </li>
+        {% endif %}
+        {% endif %}
+
+
+      </ul>
+      <div class="header-login flex justify-space-between gap-5">
+
+        {% if request.user.is_authenticated %}
+        <ul>
+          <span class="nav-item">
+            <a class="nav-link active fs-100 fs-montserrat bold-500" href="{% url 'customer:logout' %}"> logout
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </span>
+          {% else %}
+          <span class="nav-item">
+            <a class="nav-link active fs-100 fs-montserrat bold-500" href="{% url 'customer:login' %}">login
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </span>
+          {% endif %}
+        </ul>
+        <div class="flex  align-items-center">
+          <a href="{% url 'cart:view_cart' %}" class="text-black">
+            <div class="d-flex align-items-center"><i class="uil uil-shopping-bag "></i><sup
+                class="bg-red text-white rounded-circle p-2">{{cart_count}}</sup></div>
+          </a>
+          <a href="{% url 'cart:wishlist' %}" class="text-black">
+            <div class=""><a href="{% url 'cart:wishlist' %}" class="text-black">
+                <div class="d-flex align-items-center fs-200"><i class="uil uil-heart-alt "></i>
+              </a>
+
+              <a  class="ms-2" href="{% url 'orders:wallet' %}"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                  id="wallet">
+                  <g fill="none" fill-rule="evenodd" stroke="#200E32" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="1.5" transform="translate(2.5 3)">
+                    <path
+                      d="M19.1389383,11.3957621 L15.0906357,11.3957621 C13.6041923,11.3948508 12.399362,10.1909319 12.3984507,8.70448849 C12.3984507,7.21804511 13.6041923,6.01412622 15.0906357,6.01321486 L19.1389383,6.01321486">
+                    </path>
+                    <line x1="15.549" x2="15.237" y1="8.643" y2="8.643"></line>
+                    <path
+                      d="M5.24766462,1.52259158e-14 L13.8910914,1.52259158e-14 C16.7892458,1.52259158e-14 19.138756,2.34951014 19.138756,5.24766462 L19.138756,12.4246981 C19.138756,15.3228526 16.7892458,17.6723627 13.8910914,17.6723627 L5.24766462,17.6723627 C2.34951014,17.6723627 1.69176842e-15,15.3228526 1.69176842e-15,12.4246981 L1.69176842e-15,5.24766462 C1.69176842e-15,2.34951014 2.34951014,1.52259158e-14 5.24766462,1.52259158e-14 Z">
+                    </path>
+                    <line x1="4.536" x2="9.935" y1="4.538" y2="4.538"></line>
+                  </g>
+                </svg></a>
+            
+
+
+
+
+        </div>
+      </div>
+    </div>
+</nav>

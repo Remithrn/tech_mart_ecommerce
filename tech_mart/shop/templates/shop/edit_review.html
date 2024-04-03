@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Edit Review</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="reviews">
+      <p class="text-black fs-poppins fs-200">Add a review</p>
+    </div>
+  
+    <div class="give-reviews flex">
+      <div>
+        <p class="text-black fs-poppins fs-200 bold-700">Your rating *</p>
+      </div>
+      <div>
+        {{ review_form.rating }}
+      </div>
+    </div>
+    <div class="message grid">
+      <p class="fs-montserrat">Your review</p>
+      {{ review_form.message }}
+    </div>
+    <div class="review-btn flex">
+      <button id="add-connent" class="large-btn bg-red text-white fs-poppins fs-50" type="submit">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

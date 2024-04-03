@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container ">
+    <div class="row ">
+        <div class="col-lg-6 image-gallery">
+            <div class="row">
+                <div class="col-lg-2 d-flex flex-column">
+                    {% for image in product.images.all %}
+                        <div class="product-item" data-img="{{ image.image.url }}">
+                            <img class="product_img img-fluid w-100 small_img" src="{{ image.image.url }}" alt="{{ product.name }}">
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-lg-7">
+                    
+                    <div id="item-3" class="product-item" data-img="{{ product.images.first.image.url }}">
+                        <img class="product_img img-fluid w-100 big_img" src="{{ product.images.first.image.url }}" alt="{{ product.name }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 bg-white rounded p-2">
+            <div class="content">
+                <div class="product-info grid">
+                    <h1 class="fs-poppins fs-400 blod-900">{{ product.name }}</h1>
+                    <div class="star-icon flex">
+                      <div>
+                        <i class="uil text-red uil-star"></i>
+                        <i class="uil text-red uil-star"></i>
+                        <i class="uil text-red uil-star"></i>
+                        <i class="uil text-red uil-star"></i>
+                        <i class="uil uil-star"></i>
+                      </div>
+                      <div>
+                        <p class="fs-montserrat fs-100">(1 customer review)</p>
+                      </div>
+                    </div>
+                    <div>
+                        <p class="fs-montserrat text-red">
+                          <span class="text-black">Category: </span>{{ product.category }}
+                        </p>
+                      </div>
+            
+                    <div class="price">
+                      <p class="bold-700 fs-poppins fs-300">$ {{product.price}}</p>
+                    </div>
+            
+                    <div>
+                      <p class="fs-montserrat lineheight">
+                        {{ product.description|linebreaks }}
+                      </p>
+                    </div>
+            
+                    <div class="product-add-cart flex">
+                        {% if product.stock <= 0 %}
+                        <p class="text-justify my_prod_text my_custom_a"><b>Out of stock</b></p>
+                    {% else %}
+                      
+                      <button
+                        class="product-btn large-btn bg-red text-white fs-poppins fs-50"
+                      ><a href="{% url 'cart:add_cart' product.id %}" class="text-white">Add to cart</a>
+                        
+                      </button>
+                    </div>
+                    {% endif %}
+            
+                    
+                  </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+ <section class="best-Seller related-product">
+      <div class="product grid">
+        <img src="/image/p-2.jpg" alt="" />
+        <p class="fs-poppins bold-500">White EliteBook Tablet 810</p>
+        <p class="fs-poppins bold-500">$995.00</p>
+
+        <!-- ---------------------------- -->
+        <div class="product-details grid bg-red">
+          <i class="text-white uil uil-shopping-cart-alt"></i>
+          <i class="text-white uil uil-heart-alt"></i>
+        </div>
+        <!-- ===================================== -->
+      </div>
+      <div class="product grid">
+        <img src="/image/p-3.jpg" alt="" />
+        <p class="fs-poppins bold-500">White EliteBook Tablet 810</p>
+        <p class="fs-poppins bold-500">$995.00</p>
+
+        <!-- ---------------------------- -->
+        <div class="product-details grid bg-red">
+          <i class="text-white uil uil-shopping-cart-alt"></i>
+          <i class="text-white uil uil-heart-alt"></i>
+        </div>
+        <!-- ===================================== -->
+      </div>
+      <div class="product grid">
+        <img src="/image/p-4.jpg" alt="" />
+        <p class="fs-poppins bold-500">Game Console Controller Cable</p>
+        <p class="fs-poppins bold-500">$995.00</p>
+
+        <!-- ---------------------------- -->
+        <div class="product-details grid bg-red">
+          <i class="text-white uil uil-shopping-cart-alt"></i>
+          <i class="text-white uil uil-heart-alt"></i>
+        </div>
+        <!-- ===================================== -->
+      </div>
+      <div class="product grid">
+        <img src="/image/p-5.jpg" alt="" />
+        <p class="fs-poppins bold-500">Rocky Mountain</p>
+        <p class="fs-poppins bold-500">$995.00</p>
+
+        <!-- ---------------------------- -->
+        <div class="product-details grid bg-red">
+          <i class="text-white uil uil-shopping-cart-alt"></i>
+          <i class="text-white uil uil-heart-alt"></i>
+        </div>
+        <!-- ===================================== -->
+      </div>
+      <div class="product grid">
+        <img src="/image/p9.jpg" alt="" />
+        <p class="fs-poppins bold-500">White EliteBook Tablet 810</p>
+        <p class="fs-poppins bold-500">$995.00</p>
+
+        <!-- ---------------------------- -->
+        <div class="product-details grid bg-red">
+          <i class="text-white uil uil-shopping-cart-alt"></i>
+          <i class="text-white uil uil-heart-alt"></i>
+        </div>
+        <!-- ===================================== -->
+      </div>
+      <div class="product grid">
+        <img src="/image/p-7.jpg" alt="" />
+        <p class="fs-poppins bold-500">Wireless Audio System Multiroom 360</p>
+        <p class="fs-poppins bold-500">$995.00</p>
+
+        <!-- ---------------------------- -->
+        <div class="product-details grid bg-red">
+          <i class="text-white uil uil-shopping-cart-alt"></i>
+          <i class="text-white uil uil-heart-alt"></i>
+        </div>
+        <!-- ===================================== -->
+      </div>
+      <div class="product grid">
+        <img src="/image/p8.png" alt="" />
+        <p class="fs-poppins bold-500">Wireless Audio System Multiroom 360</p>
+        <p class="fs-poppins bold-500">$995.00</p>
+
+        <!-- ---------------------------- -->
+        <div class="product-details grid bg-red">
+          <i class="text-white uil uil-shopping-cart-alt"></i>
+          <i class="text-white uil uil-heart-alt"></i>
+        </div>
+        <!-- ===================================== -->
+      </div>
+      <div class="product grid">
+        <img src="/image/p9.jpg" alt="" />
+        <p class="fs-poppins bold-500">Smartwatch 2.0 LTE Wifi</p>
+        <p class="fs-poppins bold-500">$995.00</p>
+
+        <!-- ---------------------------- -->
+        <div class="product-details grid bg-red">
+          <i class="text-white uil uil-shopping-cart-alt"></i>
+          <i class="text-white uil uil-heart-alt"></i>
+        </div>
+        <!-- ===================================== -->
+      </div>
+    </section>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oLlAuxiV2Slr+OPn6GXL49uK9LorOijFtgkWfDLCp94=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-zoom/1.6.1/jquery.zoom.js" integrity="sha512-1O67rfB2z8nblD56BtCKfz/uIU0/vSDIz4mWkr7GIii9sjcuzXP7LpZrTg+D2AGOFcVXoPMUoKEFBwEV14QiUg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src='{% static "js/zoomsl.js" %}'></script>
+
+<script>
+    $(document).ready(function(){
+        $(".small_img").hover(function(){
+            $(".big_img").attr('src', $(this).attr('src'));
+        });
+    });
+
+    $(document).ready(function () {
+        $(".big_img").imagezoomsl({
+            zoomrange: [3, 3]
+        });
+    });
+</script>
+
+{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h2>Create new</h2>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {{form.as_p}}
+
+  
+
+
+                <button type="submit" class="btn btn-success mt-2">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

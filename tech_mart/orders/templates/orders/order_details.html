@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container" id="printable-content">
+    <div>
+        <div class="text-center">
+            <br>
+            <h1 class="text-center my_title">Orders</h1>
+            <br>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th scope="row">Order ID</th>
+                        <td>{{ order.id }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Order Date</th>
+                        <td>{{ order.date_ordered }}</td>
+                    </tr>
+                    <tr>
+                        <th>Download invoice</th>
+                        <td><button class="btn btn-primary" onclick="window.print()">
+                                <i class="fas fa-print"></i> Print Invoice
+                            </button></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Order Total</th>
+                        <td>${{ order.total_price }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Delivery Status</th>
+                        <td>{{ order.delivery_status }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Payment Method</th>
+                        <td>{{ order.payment_method }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Payment Status</th>
+                        <td>{{ order.payment_status }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Order Status</th>
+                        {% if order.is_cancelled %}
+                        <td>Cancelled</td>
+                        {% else %}
+                        <td>Not Cancelled</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        {% if order.delivery_status == 'Delivered' %}
+                        <th scope="row"> Order</th>
+                        <td> <a href="{% url 'orders:return_order' order.id %}">Return</a></td>
+                        {% else %}
+                        {% if not order.is_cancelled %}
+                        <th scope="row">Cancel Order</th>
+                        <td><a href="{% url 'orders:cancel' order.id %}">
+                                Cancel Order
+                            </a></td>
+                        {% endif %}
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th scope="row">Order Address</th>
+                        <td>{{ order.delivery_address }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 ">
+                <table class="table my_custom_table ">
+                    <thead>
+                        <tr>
+                            <th class="my_custom_thead rounded-top" colspan="5">Your Items</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cart_item in order_items %}
+                        <tr>
+                            <td>
+                                <a href=""><img src="{{cart_item.product.images.first.image.url}}" alt="" class="float-left rounded custom_image" height="125px" width="125px"></a>
+                            </td>
+                            <td class="text-left">
+                                <b>{{cart_item.product.name}}</b>
+                                <br>
+                                <br>
+                                {% if cart_item.product.price_after_discount < cart_item.product.price %}
+                                <p class="fs-poppins bold-500"><b>Price</b>:$ <span class="text-decoration-line-through"> {{cart_item.product.price}} </span> {{cart_item.product.price_after_discount}} </p>
+                                {% else %}
+                                <b>Price</b>:$ {{cart_item.product.price}}
+                                {% endif %}
+                                <br>
+                                <b>Quantity</b>:{{cart_item.quantity}}
+                            </td>
+                            <td>
+                                <a href="{% url 'shop:detail' cart_item.product.slug %}" class="text-blue"><b>View Details</b></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+
+        #printable-content,
+        #printable-content * {
+            visibility: visible;
+        }
+
+        #printable-content {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    }
+</style>
+
+{% endblock content %}

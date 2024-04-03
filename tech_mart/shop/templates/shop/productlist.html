@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% block content %} {% include "carousal.html" %}
+<div class="container">
+  <h1>Products</h1>
+  <div class="row">
+    {% for product in products %}
+    <div class="col-lg-3 col-md-4">
+      <div class="card my-1 border border-secondary">
+        <div class="card-body" style="min-height: 450px">
+          <div class="card-img">
+            <img src="{{product.images.first.image.url}}" alt="" srcset="" />
+          </div>
+          <hr />
+          <a href="{% url 'shop:detail' product.slug %}" class="fw-bold"
+            >{{product.name|truncatewords:10}}</a
+          >
+          {% if product.price_after_discount < product.price %}
+
+          <p class="fs-poppins bold-500">
+            $
+            <span class="text-decoration-line-through">
+              {{product.price}}
+            </span>
+            {{product.price_after_discount}}
+          </p>
+
+          {% else %}
+
+          <p class="fs-poppins bold-500">${{product.price}}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}
