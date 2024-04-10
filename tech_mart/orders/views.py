@@ -48,6 +48,7 @@ def checkout(request):
     cart = Cart.objects.get(user=customer)
     total_amount = cart.get_total()
     total_discount = 0
+    new_address = None
     for item in cart.cart_items.all():
         if item.quantity > item.product.stock:
             messages.error(request, f"Product {item.product.name} is out of stock")
@@ -69,7 +70,7 @@ def checkout(request):
             cart.coupon = None
             cart.save()
 
-        form = AddressForm(request.POST)
+       
         form_pay = PaymentMethodForm(request.POST)
         a_form = AddressSelectForm(request.POST, user=customer)
 
@@ -84,6 +85,9 @@ def checkout(request):
                 form.save()
 
             payment_method = form_pay.cleaned_data.get("payment_method")
+            if payment_method =="Cash On Delivery" and total_amount >1000:
+                messages.error(request, "Cash on delivery is only available for orders less than 1000")
+                return redirect("cart:view_cart")
 
             with transaction.atomic():
                 # Check item quantity again before creating order
@@ -159,13 +163,13 @@ def checkout(request):
 
     else:
         a_form = AddressSelectForm(user=customer)
-        form = AddressForm()
+        
         form_pay = PaymentMethodForm()
 
     return render(
         request,
         "orders/place_order.html",
-        {"form": form, "form_payt": form_pay, "customer": customer, "a_form": a_form},
+        { "form_payt": form_pay, "customer": customer, "a_form": a_form},
     )
 
 
@@ -274,6 +278,7 @@ def return_order(request, id):
 @login_required
 def view_wallet(request):
     wallet, created = Wallet.objects.get_or_create(customer=request.user)
+    wallet_balance = wallet.balance
     wallet_orders = Order.objects.filter(customer=request.user, payment_method="Wallet").order_by('-date_ordered')
 
     paginator = Paginator(wallet_orders, 5)  # Show 10 orders per page
@@ -288,10 +293,10 @@ def view_wallet(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         wallet_orders = paginator.page(paginator.num_pages)
 
-    return render(request, "orders/wallet.html", {"wallet": wallet, "wallet_order": wallet_orders})
+    return render(request, "orders/wallet.html", {"wallet": wallet_balance, "wallet_order": wallet_orders})
 
 
-
+@login_required
 def change_payment_method(request,order_id):
     order = get_object_or_404(Order, id=order_id)
     if order.payment_status == "Paid":

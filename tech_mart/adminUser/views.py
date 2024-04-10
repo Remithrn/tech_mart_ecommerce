@@ -263,7 +263,8 @@ def create_product12(request):
     context = {"p_form": productform, "i_form": imageform, "operation": "create"}
     return render(request, "adminUser/create_new.html", context)
 
-
+@user_passes_test(lambda u: u.is_superuser, login_url="adminUser:error")
+@never_cache
 def category_management(request):
     categories = Category.objects.all()
     return render(
@@ -289,7 +290,8 @@ def order_management(request):
 
     return render(request, "adminUser/order_management.html", {"orders": orders})
 
-
+@user_passes_test(lambda u: u.is_superuser, login_url="adminUser:error")
+@never_cache
 def edit_order(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
     if request.method == "POST":
@@ -471,13 +473,13 @@ def generate_excel_report(orders, total_revenue, total_discount):
     writer.writerow(["Discount", "", f"${total_discount}", "", "", "", ""])
     return response
 
-
+@user_passes_test(lambda u: u.is_superuser, login_url="adminUser:error")
 def coupon_management(request):
     coupons = Coupons.objects.all()
     context = {"coupons": coupons}
     return render(request, "adminUser/coupons_list.html", context)
 
-
+@user_passes_test(lambda u: u.is_superuser, login_url="adminUser:error")
 def create_coupon(request):
     if request.method == "POST":
         form = CouponForm(request.POST)
@@ -494,7 +496,8 @@ def create_coupon(request):
     )
 
 
-
+@user_passes_test(lambda u: u.is_superuser, login_url="adminUser:error")
+@never_cache
 def edit_coupon(request, coupon_id):
     coupon = get_object_or_404(Coupons, id=coupon_id)
     if request.method == "POST":
@@ -511,7 +514,8 @@ def edit_coupon(request, coupon_id):
         request, "adminUser/create_coupon.html", {"form": form, "operation": "Edit"}
     )
 
-
+@user_passes_test(lambda u: u.is_superuser, login_url="adminUser:error")
+@never_cache
 def delete_coupon(request, coupon_id):
     coupon = get_object_or_404(Coupons, id=coupon_id)
     coupon.delete()

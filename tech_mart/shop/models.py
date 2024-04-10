@@ -87,7 +87,13 @@ class Product(models.Model):
         else:
             print("No discount")
             return self.price
-    
+    # calculate average rating
+    def avg_rating(self):
+        reviews = self.reviews.all()
+        if reviews.count() > 0:
+            return round(sum([review.rating for review in reviews]) / reviews.count(), 1)
+        else:
+            return 0
     
 
 
@@ -119,7 +125,7 @@ class Review(models.Model):
     customer = models.ForeignKey(
         Customer, on_delete=models.CASCADE, related_name="reviews"
     )
-    message = models.TextField(validators=[MinLengthValidator(10, "Review must be at least 10 characters"),validate_non_empty])
+    message = models.TextField(validators=[validate_non_empty])
     rating = models.IntegerField(choices=Stars, default=0)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

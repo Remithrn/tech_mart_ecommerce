@@ -71,7 +71,9 @@ class ProductDetail(DetailView):
             review_form = ReviewForm()
             return redirect("shop:detail", slug=product.slug)
         else:
-            messages.error(request, "Error submitting review")
+            messages.error(request, f"Error submitting review{review_form.errors}")
+            print(review_form.errors)
+            print(review_form)
 
         # If the form is not valid, re-render the product detail page with the form and errors
         return render(

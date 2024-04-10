@@ -35,7 +35,7 @@ class DeactivateCustomerForm(forms.Form):
 class OrdersForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['customer',  'total_price', 'payment_status', 'delivery_status', 'payment_method','complete','is_cancelled','delivery_address' ]
+        fields = ['customer',  'total_price', 'payment_status', 'delivery_status', 'payment_method','complete','delivery_address' ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -43,5 +43,5 @@ class OrdersForm(forms.ModelForm):
         self.fields['customer'].disabled = True
         self.fields['total_price'].disabled = True
         self.fields['payment_method'].disabled = True
-        self.fields['is_cancelled'].disabled = True
+
         self.fields['delivery_address'].disabled = True

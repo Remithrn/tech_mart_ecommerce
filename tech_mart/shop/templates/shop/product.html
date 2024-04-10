@@ -15,8 +15,8 @@
 <section class="shop-feature bg-gray grid">
   <div>
     <ol class="breadcrumb fs-poppins fs-100  text-black mt-3 ms-2">
-      <li class="breadcrumb-item margin" aria-current="page">Home</li>
-      <li class="breadcrumb-item margin" aria-current="page">{{product.category}}</li>
+      <li class="breadcrumb-item margin" aria-current="page"><a href="{% url 'shop:home' %}">Home</a></li>
+      <li class="breadcrumb-item margin" aria-current="page"><a href="{% url 'shop:by_category' product.category.slug %}">{{product.category}}</a></li>
       <li class="breadcrumb-item margin" aria-current="page">{{product.name}}</li>
     </ol>
 
@@ -50,7 +50,22 @@
       <div class="content">
         <div class="product-info grid">
           <h1 class="fs-poppins fs-400 bold-900 uppercase">{{ product.name }}</h1>
-          <!-- <div class="star-icon flex">
+      
+          {% if product.avg_rating <= 0 %}
+          <p>no reviews yet</p>
+          {% else %}
+          <div class="star-icon flex">
+            {% for _ in "12345" %}
+            {% if forloop.counter <= product.avg_rating %} <i class="uil text-red uil-star"></i>
+              {% else %}
+  
+              <i class="uil uil-star"></i>
+              {% endif %}
+              {% endfor %}</div><br>
+              {{product.avg_rating}}
+            
+          {% endif %}
+          <!-- 
                           <div>
                             <i class="uil text-red uil-star"></i>
                             <i class="uil text-red uil-star"></i>

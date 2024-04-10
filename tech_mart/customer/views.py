@@ -1,9 +1,11 @@
 import re
+import random
+import string
 from django.forms import ValidationError
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from .models import Customer, Address
+from .models import Customer, Address, Wallet
 from .forms import CustomerRegistrationForm
 import random
 from .helper import MessageHandler
@@ -49,7 +51,22 @@ def registerView(request):
             customer = form.save(commit=False)
             customer.otp = otp
             customer.save()
-            print(customer.id)
+            referral_code = request.GET.get('referral_code')
+            if referral_code:
+               referrer = get_object_or_404(Customer, referral_code=referral_code)
+               try:
+                   referrer_wallet = Wallet.objects.get(customer=referrer)
+                   print("Referrer wallet balance: ", referrer_wallet.balance)
+                   referrer_wallet.balance += 100
+                   referrer_wallet.save()
+                   print("Referrer wallet balance: ", referrer_wallet.balance)
+                   print("refferer: ", referrer.username)
+               except Wallet.DoesNotExist:
+                   referrer_wallet = Wallet.objects.create(customer=referrer, balance=100)
+                   print("Referrer wallet balance: ", referrer_wallet.balance)
+               
+                
+
             red = redirect("customer:otp", customer.id)
             red.set_cookie("can_otp_enter", True, max_age=600)
             return red
@@ -138,7 +155,7 @@ def profile_view(request):
 
         order_count = orders_list.count()
         total_orders = sum(order.total_price for order in orders_list)
-        print(customer_addresses)
+
         return render(
             request,
             "customer/profile.html",
@@ -153,7 +170,7 @@ def profile_view(request):
 
 
 @login_required
-def add_new_address(request):
+def add_new_address(request,source):
     form = AddressForm()
     if request.method == "POST":
         form = AddressForm(request.POST)
@@ -162,12 +179,18 @@ def add_new_address(request):
             address.user = request.user
             address.save()
             messages.success(request, "Address added successfully!")
+            if source == "profile":
+                return redirect("customer:profile")
+            elif source == "checkout":
+                return redirect("orders:place_order")
             return redirect("customer:profile")
         else:
             messages.error(request, form.errors)
             return redirect("customer:profile")
 
     return render(request, "customer/add_new_address.html", {"form": form})
+
+
 @login_required
 def edit_address(request, id):
     address = Address.objects.get(id=id)
@@ -181,15 +204,14 @@ def edit_address(request, id):
         messages.error(request, form.errors)
     return render(request, "customer/edit_address.html", {"form": form})
 
+
 @login_required
 def delete_address(request, id):
     address = Address.objects.get(id=id)
+    print(address)
     address.delete()
     messages.success(request, "Address deleted successfully!")
     return redirect("customer:profile")
-
-        
-    
 
 
 from django.contrib.auth.password_validation import validate_password
@@ -202,7 +224,6 @@ def change_password_view(request):
         current_password = request.POST.get("current_password")
         new_password = request.POST.get("password1")
         confirm_password = request.POST.get("password2")
-        print(current_password, new_password, confirm_password)
 
         try:
             # Validate the new password using Django's built-in password validators
@@ -277,7 +298,7 @@ def edit_profile_view(request):
 def check_username(request):
     form = CustomerRegistrationForm()
     if request.method == "POST":
-        print('post')
+
         form = CustomerRegistrationForm(request.POST)
         username = request.POST.get("username")
 
@@ -323,13 +344,46 @@ def validate_passwords_view(request):
 
 def test_register(request):
     form = CustomerRegistrationForm()
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CustomerRegistrationForm(request.POST)
         if form.is_valid():
             # Process the valid form data (e.g., save the user)
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({"status": "success"})
         else:
-        # If the request method is not POST, or if the form is not valid, render the form with the provided data (if any)
+            # If the request method is not POST, or if the form is not valid, render the form with the provided data (if any)
             form = CustomerRegistrationForm(request.POST)
-    
-    return render(request, 'customer/check_username.html', {'form': form})
+
+    return render(request, "customer/check_username.html", {"form": form})
+
+
+
+
+
+def generate_referral_code(length=8):
+    characters = string.ascii_letters + string.digits
+    referral_code = "".join(random.choice(characters) for _ in range(length))
+    if Customer.objects.filter(referral_code=referral_code).exists():
+        return generate_referral_code()
+    return referral_code
+
+
+@login_required
+def create_referral_link(request):
+    base_url = request.build_absolute_uri('/')[:-1]  # Get base URL without trailing slash
+    user = request.user
+    if user.referral_code:
+        referral_link = (
+            base_url + reverse("customer:register") + "?referral_code=" + user.referral_code
+        )
+        return HttpResponse(
+            f"<span > {referral_link}</span>"
+        )
+    else:
+        user.referral_code = generate_referral_code()
+        user.save()
+        referral_link = (
+            base_url + reverse("customer:register") + "?referral_code=" + user.referral_code
+        )
+        return HttpResponse(
+            f"<span > {referral_link}</span>"
+        )

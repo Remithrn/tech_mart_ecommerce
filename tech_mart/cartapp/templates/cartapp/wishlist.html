@@ -40,7 +40,13 @@
        <!-- ===============Pop-Up========================== -->
 
      </div>
-     {% endfor %}
+     {% empty %}
+     <div>
+     <h2 class="fs-montserrat fs-300 bold-700">No Products</h2>
+     <p class="fs-poppins">You have no products in your wishlist</p>
+      <button class="bg-red text-white fs-montserrat "><a class="text-white" href="{% url 'shop:home' %}">Continue Shopping</a>
+      </div>
+        {% endfor %}
    
     
    </section>

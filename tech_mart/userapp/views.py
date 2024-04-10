@@ -563,8 +563,8 @@ def my_wallet(request):
     try:
         wallet = Wallet.objects.get(user=current_user)
     except Wallet.DoesNotExist:
-        wallet = Wallet.objects.create(user=current_user, amount=0)
-    wallet_amount = wallet.amount
+        wallet = Wallet.objects.create(user=current_user, balance=0)
+    wallet_amount = wallet.balance
     wallet_orders = Order.objects.filter(user=current_user, is_ordered=True,is_cancelled=False,is_returned=False,payment_method='Wallet')
     print("***********************************")
     print(wallet_orders)

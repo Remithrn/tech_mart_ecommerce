@@ -30,6 +30,7 @@ class Customer(AbstractUser):
     address=models.ForeignKey(Address, on_delete=models.SET_NULL, related_name='customers',blank=True,null=True)
     otp=models.CharField(max_length=100,null=True,blank=True)
     is_verified=models.BooleanField(default=False)
+    referral_code = models.CharField(max_length=10, unique=True,null=True,blank=True)
 
 
 class Wallet(models.Model):

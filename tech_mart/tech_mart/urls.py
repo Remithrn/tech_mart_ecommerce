@@ -27,6 +27,7 @@ urlpatterns = [
     path("cadmin/",include("adminUser.urls")),
     path("cart/",include("cartapp.urls")),
     path("orders/",include("orders.urls")),
+    path("reset",include("passwordreset.urls")),
     
 ]
 

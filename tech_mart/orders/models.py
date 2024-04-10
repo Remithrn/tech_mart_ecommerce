@@ -53,7 +53,7 @@ class Order(models.Model):
     
 
     def __str__(self):
-        return f"{self.customer.username}'s Order"
+        return f"{self.customer.username}'s Order #{self.id}"
     class Meta:
         ordering = ['-date_ordered','is_cancelled']
     

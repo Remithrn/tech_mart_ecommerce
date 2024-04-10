@@ -44,6 +44,7 @@ def remove_item(request, slug):
         else:
             cart_items.delete()
     return redirect('cart:view_cart') 
+
 @login_required
 def remove_all_item(request, slug):
     product=Product.objects.get(slug=slug)
@@ -124,6 +125,11 @@ def whishlist(request):
     user=request.user
     whishlist_items=Wishlist.objects.filter(user=user)
     products=Product.objects.filter(wishlist__in=whishlist_items)
+    #filtering out items already in cart
+    cart = Cart.objects.get(user=user)
+    cart_items = CartItem.objects.filter(cart=cart)
+    product_ids_in_cart = cart_items.values_list('product_id', flat=True)
+    products = products.exclude(id__in=product_ids_in_cart)
     print(products)
     for product in products:
         print(product.name)

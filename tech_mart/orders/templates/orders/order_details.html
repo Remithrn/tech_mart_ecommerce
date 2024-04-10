@@ -49,14 +49,64 @@
                     </tr>
                     <tr>
                         {% if order.delivery_status == 'Delivered' %}
-                        <th scope="row"> Order</th>
-                        <td> <a href="{% url 'orders:return_order' order.id %}">Return</a></td>
+                        <th scope="row">Return Order</th>
+                        <td>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#returnModal{{ order.id }}">
+                                Return Order
+                            </button>
+                    
+                            <!-- Return Order Modal -->
+                            <div class="modal fade" id="returnModal{{ order.id }}" tabindex="-1" aria-labelledby="returnModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="returnModalLabel">Return Order</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Modal Content Here -->
+                                            Are you sure you want to return this order?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <a href="{% url 'orders:return_order' order.id %}" class="btn btn-primary">Confirm Return</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                         {% else %}
                         {% if not order.is_cancelled %}
                         <th scope="row">Cancel Order</th>
-                        <td><a href="{% url 'orders:cancel' order.id %}">
+                        <td>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#cancelModal{{ order.id }}">
                                 Cancel Order
-                            </a></td>
+                            </button>
+                    
+                            <!-- Cancel Order Modal -->
+                            <div class="modal fade" id="cancelModal{{ order.id }}" tabindex="-1" aria-labelledby="cancelModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="cancelModalLabel">Cancel Order</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Modal Content Here -->
+                                            Are you sure you want to cancel this order?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <a href="{% url 'orders:cancel' order.id %}" class="btn btn-danger">Confirm Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                         {% endif %}
                         {% endif %}
                     </tr>
